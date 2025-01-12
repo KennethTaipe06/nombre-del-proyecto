@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css'; // Importar el archivo CSS
-import Alert from './Alert'; // Importar el componente de alerta
+import Alert from '../components/Alert'; // Importar el componente de alerta
 
 const Register = () => {
   console.log('Register component rendered');

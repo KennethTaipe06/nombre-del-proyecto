@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Login.css'; // Importar el archivo CSS
-import Alert from './Alert'; // Importar el componente de alerta
-import { AuthContext } from './AuthContext'; // Importar el contexto de autenticación
+import Alert from '../components/Alert'; // Importar el componente de alerta
+import { AuthContext } from '../AuthContext'; // Importar el contexto de autenticación
 
 const Login = () => {
   console.log('Login component rendered');

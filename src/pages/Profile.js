@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Profile.css'; // Importar el archivo CSS
-import Modal from './components/Modal'; // Importar el componente Modal
-import ConfirmModal from './components/ConfirmModal'; // Importar el componente ConfirmModal
+import Modal from '../components/Modal'; // Importar el componente Modal
+import ConfirmModal from '../components/ConfirmModal'; // Importar el componente ConfirmModal
 
 const Profile = () => {
   const [username, setUsername] = useState('');
@@ -109,7 +109,7 @@ const Profile = () => {
   const handleDelete = async () => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3002/users/${userId}?token=${token}`;
+    const url = `http://localhost:3003/users/${userId}?token=${token}`;
 
     try {
       const response = await fetch(url, {

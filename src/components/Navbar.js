@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css'; // Importar el archivo CSS
-import { AuthContext } from './AuthContext'; // Importar el contexto de autenticación
+import { AuthContext } from '../AuthContext'; // Importar el contexto de autenticación
 
 const Navbar = () => {
   const navigate = useNavigate();

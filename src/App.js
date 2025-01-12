@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
-import Login from './Login';
-import Register from './Register'; // Importar el componente Register
-import Welcome from './Welcome'; // Importar el componente Welcome
-import Profile from './Profile'; // Importar el componente Profile
-import Navbar from './Navbar'; // Importar el componente Navbar
+import Login from './pages/Login';
+import Register from './pages/Register'; // Importar el componente Register
+import Welcome from './pages/Welcome'; // Importar el componente Welcome
+import Profile from './pages/Profile'; // Importar el componente Profile
+import Navbar from './components/Navbar'; // Importar el componente Navbar
 import PrivateRoute from './PrivateRoute'; // Importar el componente PrivateRoute
-import ForgotPassword from './ForgotPassword'; // Importar el componente ForgotPassword
-import VerifyCode from './VerifyCode'; // Importar el componente VerifyCode
+import ForgotPassword from './pages/ForgotPassword'; // Importar el componente ForgotPassword
+import VerifyCode from './pages/VerifyCode'; // Importar el componente VerifyCode
 import { AuthContext, AuthProvider } from './AuthContext'; // Importar el contexto de autenticación
 
 function App() {

@@ -6,6 +6,8 @@ import Welcome from './Welcome'; // Importar el componente Welcome
 import Profile from './Profile'; // Importar el componente Profile
 import Navbar from './Navbar'; // Importar el componente Navbar
 import PrivateRoute from './PrivateRoute'; // Importar el componente PrivateRoute
+import ForgotPassword from './ForgotPassword'; // Importar el componente ForgotPassword
+import VerifyCode from './VerifyCode'; // Importar el componente VerifyCode
 import { AuthContext, AuthProvider } from './AuthContext'; // Importar el contexto de autenticación
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/welcome" element={<PrivateRoute element={Welcome} />} />
         <Route path="/profile" element={<PrivateRoute element={Profile} />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-code" element={<VerifyCode />} />
         <Route path="/" element={
           <>
             <Login />

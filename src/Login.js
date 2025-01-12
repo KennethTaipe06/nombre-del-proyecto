@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Login.css'; // Importar el archivo CSS
 import Alert from './Alert'; // Importar el componente de alerta
 import { AuthContext } from './AuthContext'; // Importar el contexto de autenticación
@@ -67,6 +67,9 @@ const Login = () => {
         </div>
         <button type="submit" className="login-button">Login</button>
       </form>
+      <p>
+        <Link to="/forgot-password">Forgot Password?</Link>
+      </p>
     </div>
   );
 };

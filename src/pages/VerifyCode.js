@@ -27,7 +27,7 @@ const VerifyCode = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3005/reset-password', {
+      const response = await fetch(`${process.env.REACT_APP_API_RESET_PASSWORD}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

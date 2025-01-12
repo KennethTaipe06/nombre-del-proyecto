@@ -20,7 +20,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       const userId = localStorage.getItem('userId');
       const token = localStorage.getItem('token');
-      const url = `http://localhost:3004/users/${userId}?token=${token}`;
+      const url = `${process.env.REACT_APP_API_FETCH_PROFILE}/${userId}?token=${token}`;
 
       try {
         const response = await fetch(url, {
@@ -70,7 +70,7 @@ const Profile = () => {
     event.preventDefault();
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3002/users/${userId}?token=${token}`;
+    const url = `${process.env.REACT_APP_API_UPDATE_PROFILE}/${userId}?token=${token}`;
 
     const formData = new FormData();
     formData.append('username', username);
@@ -109,7 +109,7 @@ const Profile = () => {
   const handleDelete = async () => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3003/users/${userId}?token=${token}`;
+    const url = `${process.env.REACT_APP_API_DELETE_PROFILE}/${userId}?token=${token}`;
 
     try {
       const response = await fetch(url, {

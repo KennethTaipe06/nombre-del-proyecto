@@ -17,7 +17,7 @@ function App() {
       {isAuthenticated && <Navbar />}
       <Routes>
         <Route path="/register" element={<Register />} />
-        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/welcome" element={<PrivateRoute element={Welcome} />} />
         <Route path="/profile" element={<PrivateRoute element={Profile} />} />
         <Route path="/" element={
           <>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Profile.css'; // Importar el archivo CSS
 import Modal from './components/Modal'; // Importar el componente Modal
 import ConfirmModal from './components/ConfirmModal'; // Importar el componente ConfirmModal
@@ -15,11 +15,46 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const userId = localStorage.getItem('userId');
+      const token = localStorage.getItem('token');
+      const url = `http://localhost:3004/users/${userId}?token=${token}`;
+
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json',
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setUsername(data.username);
+          setEmail(data.email);
+          setFirstName(data.firstName);
+          setLastName(data.lastName);
+          setAddress(data.address);
+          setPhone(data.phone);
+        } else {
+          setAlertMessage('Failed to fetch profile');
+          setAlertType('error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setAlertMessage('An error occurred');
+        setAlertType('error');
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3002/users/${userId}?token=${token}`;
+    const url = `http://localhost:3004/users/${userId}?token=${token}`;
 
     try {
       const response = await fetch(url, {
@@ -48,7 +83,7 @@ const Profile = () => {
   const handleDelete = async () => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3003/users/${userId}?token=${token}`;
+    const url = `http://localhost:3004/users/${userId}?token=${token}`;
 
     try {
       const response = await fetch(url, {
@@ -73,6 +108,14 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <h1>Perfil</h1>
+      <div className="profile-details">
+        <p><strong>Username:</strong> {username}</p>
+        <p><strong>Email:</strong> {email}</p>
+        <p><strong>First Name:</strong> {firstName}</p>
+        <p><strong>Last Name:</strong> {lastName}</p>
+        <p><strong>Address:</strong> {address}</p>
+        <p><strong>Phone:</strong> {phone}</p>
+      </div>
       <button className="edit-button" onClick={() => setIsEditing(true)}>Editar Perfil</button>
       <button className="delete-button" onClick={() => setIsDeleting(true)}>Delete Profile</button>
       <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>

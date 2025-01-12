@@ -12,19 +12,29 @@ const Register = () => {
   const [lastName, setLastName] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
+  const [image, setImage] = useState(null); // Nuevo estado para la imagen
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('address', address);
+    formData.append('phone', phone);
+    if (image) {
+      formData.append('image', image);
+    }
+
     try {
       const response = await fetch('http://localhost:3000/api/users', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, email, password, firstName, lastName, address, phone }),
+        body: formData,
       });
       const data = await response.json();
       if (response.ok) {
@@ -112,6 +122,13 @@ const Register = () => {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
+          />
+        </div>
+        <div className="form-group">
+          <label>Profile Image:</label>
+          <input
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
           />
         </div>
         <button type="submit" className="register-button" disabled={!isFormValid()}>Register</button>

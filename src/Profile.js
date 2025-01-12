@@ -10,6 +10,7 @@ const Profile = () => {
   const [lastName, setLastName] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
+  const [image, setImage] = useState(null); // Nuevo estado para la imagen
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -36,6 +37,11 @@ const Profile = () => {
           setLastName(data.lastName);
           setAddress(data.address);
           setPhone(data.phone);
+          if (data.image && data.image.data) {
+            const base64Flag = `data:${data.image.contentType};base64,`;
+            const imageStr = arrayBufferToBase64(data.image.data.data);
+            setImage(base64Flag + imageStr);
+          }
         } else {
           setAlertMessage('Failed to fetch profile');
           setAlertType('error');
@@ -50,29 +56,49 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
+  const arrayBufferToBase64 = (buffer) => {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3004/users/${userId}?token=${token}`;
+    const url = `http://localhost:3002/users/${userId}?token=${token}`;
+
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('address', address);
+    formData.append('phone', phone);
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
       const response = await fetch(url, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, email, firstName, lastName, address, phone }),
+        body: formData,
       });
-      const data = await response.json();
-      if (response.ok) {
-        setAlertMessage('User updated successfully');
-        setAlertType('success');
-        setIsEditing(false);
-      } else {
-        setAlertMessage('Update failed');
+      if (!response.ok) {
+        const errorData = await response.json();
+        setAlertMessage(errorData.message || 'Update failed');
         setAlertType('error');
+        return;
       }
+      const data = await response.json();
+      setAlertMessage('User updated successfully');
+      setAlertType('success');
+      setIsEditing(false);
+      window.location.reload(); // Recargar la página inmediatamente
     } catch (error) {
       console.error('Error:', error);
       setAlertMessage('An error occurred');
@@ -83,7 +109,7 @@ const Profile = () => {
   const handleDelete = async () => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-    const url = `http://localhost:3004/users/${userId}?token=${token}`;
+    const url = `http://localhost:3002/users/${userId}?token=${token}`;
 
     try {
       const response = await fetch(url, {
@@ -109,6 +135,7 @@ const Profile = () => {
     <div className="profile-container">
       <h1>Perfil</h1>
       <div className="profile-details">
+        {image && <img src={image} alt="Profile" className="profile-image" />} {/* Mostrar la imagen */}
         <p><strong>Username:</strong> {username}</p>
         <p><strong>Email:</strong> {email}</p>
         <p><strong>First Name:</strong> {firstName}</p>
@@ -172,6 +199,13 @@ const Profile = () => {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
+            />
+          </div>
+          <div className="form-group">
+            <label>Profile Image:</label>
+            <input
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
             />
           </div>
           <button type="submit" className="profile-button">Update</button>
